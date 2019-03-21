@@ -1158,7 +1158,7 @@ CUSBaccess::GetTemperature(int deviceNo, double *Temperature, int *timeID) {
 //				*timeID  = ((buf[0] & 0x7f) << 8) + buf[1] ;			no standard Temp device
 				}
 			else {						// read second sensor, values placed in RAM
-				unsigned int lsb, msb ;
+				int lsb, msb ;
 				if (cwGetVersion(deviceNo) < 0x8140)	{	// old IdeTect device
 					*Temperature = -200 ;
 					ok = 0 ;
@@ -1518,8 +1518,8 @@ CUSBaccess::GetADC(int deviceNo, int sequenceNumber, int subDevice) {
 			}
 		else {
 			if (subDevice == 2) {	// brightness sensor
-				unsigned int b4 ;
-				if ((b4 = cwIOX(deviceNo, 0x77, -4)) == 0xffffffff) {
+				int b4 ;
+				if ((b4 = cwIOX(deviceNo, 0x77, -4)) == -1) {
 					return -200. ;								// indicae error
 					}
 				unsigned char am = (b4 >> 24) & 0xff;
